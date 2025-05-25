@@ -17,7 +17,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    bat "docker build -t ${devopsprj}:${devopsprj} ."
+                    bat "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
@@ -25,8 +25,8 @@ pipeline {
         stage('Stop Existing Container (if any)') {
             steps {
                 script {
-                    bat "docker stop ${devopsprj} || exit 0"
-                    bat "docker rm ${devopsprj} || exit 0"
+                    bat "docker stop ${CONTAINER_NAME} || exit 0"
+                    bat "docker rm ${CONTAINER_NAME} || exit 0"
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    bat "docker run -d --name ${devopsprj} -p 8081:80 ${devopsprj}:${v2}"
+                    bat "docker run -d --name ${CONTAINER_NAME} -p 8081:80 ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
